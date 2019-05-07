@@ -148,7 +148,7 @@ func (o *OBS) GetInfo(object string) (info File, err error) {
 		return
 	}
 	info = File{
-		Name:    objectRel(object),
+		Name:    objectRel(object), // TODO check the function
 		Size:    output.ContentLength,
 		IsDir:   output.ContentLength == 0,
 		ModTime: output.LastModified,
@@ -157,7 +157,7 @@ func (o *OBS) GetInfo(object string) (info File, err error) {
 }
 
 func (o *OBS) Lists(prefix string) (files []File, err error) {
-	prefix = objectRel(prefix)
+	prefix = objectRel(prefix) // TODO check the function
 	input := &obs.ListObjectsInput{}
 	input.Prefix = prefix
 	input.Bucket = o.Bucket
@@ -170,7 +170,7 @@ func (o *OBS) Lists(prefix string) (files []File, err error) {
 	for _, item := range output.Contents {
 		files = append(files, File{
 			ModTime: item.LastModified,
-			Name:    objectRel(item.Key),
+			Name:    objectRel(item.Key), // TODO check the function
 			Size:    item.Size,
 			IsDir:   item.Size == 0,
 		})
