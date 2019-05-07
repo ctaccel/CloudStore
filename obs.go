@@ -51,7 +51,7 @@ func (o *OBS) Upload(tmpFile, saveFile string, headers ...map[string]string) (er
 
 	input := &obs.PutObjectInput{}
 	input.Bucket = o.Bucket
-	input.Key = objectRel(saveFile)
+	input.Key = obsObjKey(saveFile)
 	input.Metadata = make(map[string]string)
 	input.Body = bytes.NewBuffer(p)
 
@@ -80,7 +80,7 @@ func (o *OBS) Delete(objects ...string) (err error) {
 	var objs []obs.ObjectToDelete
 	for _, object := range objects {
 		objs = append(objs, obs.ObjectToDelete{
-			Key: objectRel(object),
+			Key: obsObjKey(object),
 		})
 	}
 	input := &obs.DeleteObjectsInput{
@@ -99,7 +99,7 @@ func (o *OBS) GetSignURL(object string, expire int64) (link string, err error) {
 	input := &obs.CreateSignedUrlInput{
 		Method:  http.MethodGet,
 		Bucket:  o.Bucket,
-		Key:     objectRel(object),
+		Key:     obsObjKey(object),
 		Expires: int(expire),
 	}
 	output := &obs.CreateSignedUrlOutput{}
@@ -118,7 +118,7 @@ func (o *OBS) GetSignURL(object string, expire int64) (link string, err error) {
 
 func (o *OBS) Download(object string, savePath string) (err error) {
 	input := &obs.GetObjectInput{}
-	input.Key = objectRel(object)
+	input.Key = obsObjKey(object)
 	input.Bucket = o.Bucket
 
 	output := &obs.GetObjectOutput{}
@@ -140,7 +140,7 @@ func (o *OBS) Download(object string, savePath string) (err error) {
 func (o *OBS) GetInfo(object string) (info File, err error) {
 	input := &obs.GetObjectMetadataInput{
 		Bucket: o.Bucket,
-		Key:    objectRel(object),
+		Key:    obsObjKey(object),
 	}
 	output := &obs.GetObjectMetadataOutput{}
 	output, err = o.Client.GetObjectMetadata(input)

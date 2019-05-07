@@ -60,3 +60,13 @@ func toJSON(v interface{}) (jsonStr string) {
 	}
 	return string(p)
 }
+
+var huaweiObsReg = regexp.MustCompile("http(s?)://(.*).(obs.*com)/?(.*)")
+
+func obsObjKey(url string) string {
+	params := huaweiObsReg.FindStringSubmatch(url)
+	if len(params) < 5 {
+		return ""
+	}
+	return params[4]
+}
