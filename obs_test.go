@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"obs"
+	"github.com/ctaccel/CloudStore/obs"
 	"os"
 	"testing"
 
